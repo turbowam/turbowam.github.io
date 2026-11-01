@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TurboWAM: Learning What Matters for Fast World Action Models</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+  
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      color: #333;
+    }
+    .hero-body { padding: 3rem 1.5rem; }
+
+    .publication-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .publication-authors { margin-top: 1rem; }
+    .author-block {
+      display: inline-block;
+      margin: 0 0.3rem;
+    }
+    .author-block a { color: #209cee; }
+    .publication-links .button {
+      margin: 0.25rem;
+      border-radius: 6px;
+    }
+
+    .section-heading {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+    .subsection-heading {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .abstract-box {
+      background: #f7f9fc;
+      border-left: 4px solid #3273dc;
+      border-radius: 4px;
+      padding: 1.5rem 2rem;
+      line-height: 1.8;
+    }
+
+    .figure-container {
+      text-align: center;
+      margin: 2rem auto;
+    }
+    .figure-container img {
+      max-width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    }
+    .figure-caption {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0.8rem auto 0;
+      max-width: 85%;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #3273dc;
+      color: white;
+      border-radius: 20px;
+      padding: 0.2rem 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin: 0.2rem;
+    }
+    .badge.green  { background: #23d160; }
+    .badge.orange { background: #ff7043; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .stat-card {
+      background: #f0f4ff;
+      border-radius: 10px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .stat-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #3273dc;
+      font-family: 'Google Sans', sans-serif;
+    }
+    .stat-card .lbl {
+      font-size: 0.82rem;
+      color: #555;
+      margin-top: 0.3rem;
+    }
+
+    .bibtex-block {
+      background: #2b2b2b;
+      color: #f8f8f2;
+      border-radius: 8px;
+      padding: 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.6;
+    }
+
+    .navbar { box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+
+    footer.footer {
+      background: #fafafa;
+      border-top: 1px solid #e8e8e8;
+      padding: 2rem 1.5rem;
+      font-size: 0.88rem;
+      color: #888;
+    }
+    footer a { color: #3273dc; }
+  </style>
+</head>
+<body>
+
+
+<section class="hero is-white">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+
+      <h1 class="publication-title">
+        TurboWAM: Learning What Matters for Fast World Action Models
+      </h1>
+
+      <div class="publication-authors is-size-5">
+        <span class="author-block">Guile Wu<sup>1</sup></span>
+        <span class="author-block">Shuangzhi Li<sup>1,3,*</sup></span>
+        <span class="author-block">Xingxin Chen<sup>1</sup></span>
+        <span class="author-block">Chengjie Huang<sup>1</sup></span>
+        <span class="author-block">Sam Hosseini<sup>1</sup></span><br>
+        <span class="author-block">Tongtong Cao<sup>2</sup></span>
+        <span class="author-block">Yingxue Zhang<sup>1</sup></span>
+        <span class="author-block">Dongfeng Bai<sup>1</sup></span>
+      </div>
+
+      <div class="is-size-6" style="margin-top:0.7rem; color:#555;">
+        <sup>1</sup>Huawei Noah's Ark Lab &nbsp;&nbsp;
+        <sup>2</sup>Department of Foundation Model, Huawei &nbsp;&nbsp;
+        <sup>3</sup>University of Alberta
+      </div>
+      <div class="is-size-7" style="margin-top:0.5rem; color:#777;">
+        <sup>*</sup>Shuangzhi Li contributed to this work during an internship at Huawei Canada.        
+      </div>
+
+      <div class="publication-links" style="margin-top:1.5rem;">
+        <a class="button is-dark is-rounded" href="https://arxiv.org/abs/2610.33941" target="_blank">
+          <span class="icon"><i class="ai ai-arxiv"></i></span>
+          <span>arXiv</span>
+        </a> 
+      </div>
+      
+
+    </div>
+  </div>
+</section>
+
+<!-- teaser -->
+<section class="section" style="padding-top:0; padding-bottom:1rem;">
+  <div class="container is-max-desktop">
+    <div class="figure-container">
+      <img src="Fig_illustration.png" alt="TurboWAM Illustration" />
+      <p class="figure-caption">
+        <strong>Figure 1.</strong>
+        Overview of TurboWAM performance.
+        (a) Visual comparison of successful task execution, highlighting the fast task completion of TurboWAM.
+        (b) Comparison of inference time vs. success rate on LIBERO.
+        TurboWAM achieves a better trade-off between inference time and success rate compared to state-of-the-art methods.
+        TurboWAM* and Fast-WAM* denote the compiled versions.
+        TurboWAM/TurboWAM* achieves 6.8&times;/2.9&times; speedup compared to Fast-WAM/Fast-WAM*, respectively.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading" style="text-align: center;">Abstract</h2>
+    <div class="abstract-box">
+    World action models have demonstrated promising performance in robot policy learning, yet their high inference latency remains a critical bottleneck for real-world deployment.
+    Recent approaches have sought to improve inference efficiency by eliminating test-time future-frame imagination or accelerating action prediction.
+    However, aggregating representations from all video world model layers can introduce redundant computation, while standard backpropagation may distribute action-supervision gradients unevenly across layers, limiting the effectiveness of world representation learning.
+    In this work, we propose <strong>TurboWAM</strong>, a fast world action model that learns to efficiently aggregate and optimize world representations for action prediction.
+    Specifically, <strong>TurboWAM</strong> introduces an efficient world representation aggregation mechanism that restricts aggregation to a bounded range of relevant world model layers identified through layer relevance analysis.
+    Within this bounded range, <strong>TurboWAM</strong> estimates aggregation weights for different world model layers based on the current action denoising state and combines them with learnable layer-wise weights to fuse world representations.
+    Moreover, <strong>TurboWAM</strong> employs a world model gradient modulation mechanism that decomposes action-supervision gradients into a layer-shared component and layer-specific residual components, enabling more balanced gradient propagation across world model layers.
+    This mechanism operates exclusively during training and introduces no additional inference computation.
+    Together, these designs enable more efficient world representation learning and low-latency action prediction.
+    Extensive experiments on multiple robot manipulation benchmarks and real-world manipulation tasks show that <strong>TurboWAM</strong> achieves low inference latency while maintaining competitive task success rates compared with state-of-the-art methods.
+    </div>
+  </div>
+</section>
+
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading" style="text-align: center;">Method</h2>
+
+    <div class="figure-container">
+      <img src="Fig_framework.png" alt="TurboWAM Framework" />
+      <p class="figure-caption">
+        <strong>Figure 2.</strong>
+        Overview of the TurboWAM framework.
+        The world representation aggregation mechanism operates within a bounded range of relevant world model layers, estimating aggregation weights based on the current action denoising state and combining them with learnable layer-wise weights.
+        The world model gradient modulation mechanism decomposes and modulates action-supervision gradients across world model layers during the backward pass.
+        Together, these complementary designs improve world representation learning and reduce inference latency while maintaining competitive task success rates.
+      </p>
+    </div>
+
+    <h3 class="subsection-heading">Contributions</h3>
+    <ul style="list-style:disc; padding-left:1.5rem; line-height:1.7;">
+      <li style="margin-bottom:0.6rem;">
+        We propose TurboWAM, a fast world action model that improves inference efficiency through effective world representation aggregation and optimization while preserving the benefits of joint video and action training.
+      </li>
+      <li style="margin-bottom:0.6rem;">
+        We introduce an efficient world representation aggregation mechanism that reduces redundant computation and improves the utilization of world representations for action prediction.
+      </li>
+      <li style="margin-bottom:0.6rem;">
+        We develop a world model gradient modulation mechanism that promotes more balanced action supervision across world model layers, facilitating effective world representation learning.
+      </li>
+      <li style="margin-bottom:0.6rem;">
+        Extensive experiments on multiple robot manipulation benchmarks and real-world robot manipulation tasks demonstrate the effectiveness and efficiency of TurboWAM compared with state-of-the-art methods.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="results" style="background:#f8fafc;">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading" style="text-align: center;">Results</h2>
+
+    <!-- Quantitative Results -->
+    <h3 class="subsection-heading" style="text-align:center;">
+      Quantitative Results
+    </h3>
+
+    <div class="figure-container">
+      <img src="Fig_result_sota_1.png"
+           alt="Quantitative Results Table 1"
+           style="width:100%; height:auto;" />
+      <p class="figure-caption">
+        <strong>Table 1.</strong>
+        Quantitative comparison with state-of-the-art methods on LIBERO and RoboTwin 2.0.
+      </p>
+    </div>
+
+    <div class="figure-container">
+      <img src="Fig_result_sota_2.png"
+           alt="Quantitative Results Table 2"
+           style="width:100%; height:auto;" />
+      <p class="figure-caption">
+        <strong>Table 2.</strong>
+        Quantitative comparison with state-of-the-art methods on LIBERO-Plus.
+      </p>
+    </div>
+
+    <!-- Qualitative Results -->
+    <h3 class="subsection-heading" style="text-align:center;">
+      Qualitative Results
+    </h3>
+
+    <div class="figure-container">
+      <img src="Fig_visualization_suppl_1.png" alt="Additional Qualitative Comparisons of Robot Task Execution" width="70%" />
+      <p class="figure-caption">
+        <strong>Figure 3.</strong> Qualitative comparisons of task execution.
+        Each row illustrates the progression of task execution from left to right.
+      </p>
+    </div>
+
+    <div class="figure-container">
+      <img src="Fig_visualization_suppl_2.png" alt="Additional Qualitative Comparisons of Robot Task Execution" width="70%" />
+      <p class="figure-caption">
+        <strong>Figure 4.</strong> Qualitative comparisons of task execution.
+        Each row illustrates the progression of task execution from left to right.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="bibtex">
+  <div class="container is-max-desktop">
+    <h2 class="section-heading" style="text-align: center;">BibTeX</h2>
+    <p style="margin-bottom:1rem; color:#555;">If you find this work useful, please cite our paper:</p>
+    <div class="bibtex-block">@article{wu2026turbowam,
+  title     = {TurboWAM: Learning What Matters for Fast World Action Models},
+  author    = {Wu, Guile and Li, Shuangzhi and Chen, Xingxin and Huang, Chengjie and Hosseini, Sam and Cao, Tongtong and Zhang, Yingxue and Bai, Dongfeng},
+  journal   = {arXiv preprint arXiv:2610.33941},
+  year      = {2026},
+}</div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8 has-text-centered">
+        <p>
+          This website is licensed under a
+          <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">
+            Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+        </p>
+        <p style="margin-top:0.5rem;">
+          Website template is from
+          <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>
+          (<a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noopener">source</a>).
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
